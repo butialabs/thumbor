@@ -17,7 +17,7 @@ Docker image for [Thumbor](https://thumbor.readthedocs.io/) an open-source smart
 
 ### Using Docker
 
-Check [`docker-compose.yml`](./docker-compose.yml)
+Check [`compose.yml`](./compose.yml) or Check [`compose-https.yml`](./compose-https.yml)
 
 ## ⚙️ Configuration
 
@@ -129,11 +129,6 @@ docker exec -it thumbor-server tail -f /var/log/supervisor/thumbor.log
 1. **Increase process count:**
 ```bash
 export THUMBOR_NUM_PROCESSES=8
-```
-
-2. **Enable SIMD optimization:**
-```bash
-docker build --build-arg SIMD_LEVEL=avx2 -t thumbor:optimized .
 ```
 
 3. **Tune caching:**
