@@ -1,0 +1,36 @@
+services:
+  thumbor:
+    image: ghcr.io/butialabs/thumbor:latest
+    container_name: thumbor
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "8888:8888"
+    environment:
+      - THUMBOR_NUM_PROCESSES=4
+      - SECURITY_KEY= # https://jwtsecretkeygenerator.com/
+      - ALLOW_UNSAFE_URL= True
+    volumes:
+      - thumbor_data:/data
+      - thumbor_logs:/var/log/supervisor
+      - thumbor_nginx_cache:/var/cache/nginx/thumbor
+    networks:
+      - thumbor
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  thumbor:
+    driver: bridge
+
+volumes:
+  thumbor_data:
+    driver: local
+  thumbor_logs:
+    driver: local
+  thumbor_nginx_cache:
+    driver: local

@@ -3,36 +3,42 @@ services:
     image: ghcr.io/butialabs/thumbor:latest
     container_name: thumbor
     restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8888:8888"
+    expose:
+      - "80"
+      - "8888"
     environment:
-      - DOMAIN=site.xyz
       - THUMBOR_NUM_PROCESSES=4
       - SECURITY_KEY= # https://jwtsecretkeygenerator.com/
       - ALLOW_UNSAFE_URL= True
     volumes:
-      # Data directories
       - thumbor_data:/data
       - thumbor_logs:/var/log/supervisor
       - thumbor_nginx_cache:/var/cache/nginx/thumbor
-      
-      # SSL certificates (Let's Encrypt)
-      - letsencrypt_certs:/etc/letsencrypt
-      - ssl_certs:/etc/ssl/certs
-      - certbot_webroot:/var/www/certbot
-
     networks:
       - thumbor
-
-    # Health check
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8888/healthcheck"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    labels:
+      caddy: ${DOMAIN}
+      caddy.reverse_proxy: "{{upstreams 80}}"
+      caddy.encode: "gzip zstd"
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - thumbor
 
 networks:
   thumbor:
@@ -45,9 +51,7 @@ volumes:
     driver: local
   thumbor_nginx_cache:
     driver: local
-  letsencrypt_certs:
+  caddy_data:
     driver: local
-  ssl_certs:
-    driver: local
-  certbot_webroot:
+  caddy_config:
     driver: local

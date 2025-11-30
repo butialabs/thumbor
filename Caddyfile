@@ -1,0 +1,4 @@
+{{DOMAIN}} {
+    reverse_proxy thumbor:80
+    encode gzip zstd
+}

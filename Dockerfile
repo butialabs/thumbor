@@ -25,11 +25,6 @@ RUN apt-get update && \
         logrotate \
         nginx
 
-# Install Certbot with NGINX support
-RUN apt-get install -y \
-    certbot \
-    python3-certbot-nginx
-
 RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* \
@@ -73,12 +68,6 @@ COPY nginx/ /etc/nginx/
 
 # Create required directory structure
 RUN mkdir -p \
-    /site/app \
-    /site/private \
-    /etc/nginx/ssl \
-    /etc/ssl/certs \
-    /var/www/certbot \
-    /etc/letsencrypt \
     /var/log/nginx \
     /var/log/supervisor \
     /var/log/system \
@@ -90,9 +79,9 @@ COPY scripts/ /usr/local/bin/
 RUN chmod +x /usr/local/bin/*.sh
 
 # Define volumes
-VOLUME ["/data", "/var/www/certbot", "/var/cache/nginx/thumbor", "/etc/letsencrypt", "/etc/ssl/certs", "/var/log"]
+VOLUME ["/data", "/var/cache/nginx/thumbor", "/var/log"]
 
-EXPOSE 8888 80 443
+EXPOSE 8888 80
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

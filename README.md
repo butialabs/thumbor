@@ -5,8 +5,6 @@ Docker image for [Thumbor](https://thumbor.readthedocs.io/) an open-source smart
 ## ✨ Features
 
 - 🚀 **Production Ready**: Built with security and performance in mind
-- 🔒 **SSL/TLS Support**: Automatic Let's Encrypt certificate management
-- 🌐 **HTTP/3 & QUIC**: Latest web protocols for improved performance
 - 🔄 **Auto Format Detection**: WebP, AVIF, and HEIF support with automatic format selection
 - 📦 **Multiple Storage Options**: File system, AWS S3, and more
 - 🎯 **Smart Detection**: Face and feature detection for intelligent cropping
@@ -102,7 +100,6 @@ https://site.xyz/filters:format(avif)/https://example.com/image.jpg
 The following directories should be persisted for production use:
 
 - `/data` - Image storage and cache
-- `/etc/letsencrypt` - SSL certificates
 - `/var/log/supervisor` - Application logs
 - `/var/log/nginx` - Nginx logs
 
