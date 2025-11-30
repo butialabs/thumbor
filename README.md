@@ -107,7 +107,7 @@ The following directories should be persisted for production use:
 
 The container includes health checks accessible at:
 - `http://localhost:8888/healthcheck` - Thumbor health check
-- `http://localhost/healthcheck` - Nginx proxy health check
+- `http://localhost:8081/healthcheck` - Nginx proxy health check
 
 ## 📊 Monitoring
 

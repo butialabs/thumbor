@@ -4,7 +4,7 @@ services:
     container_name: thumbor
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8081:80"
       - "8888:8888"
     environment:
       - THUMBOR_NUM_PROCESSES=4

@@ -3,9 +3,9 @@ services:
     image: ghcr.io/butialabs/thumbor:latest
     container_name: thumbor
     restart: unless-stopped
-    expose:
-      - "80"
-      - "8888"
+    ports:
+      - "8081:80"
+      - "8888:8888"
     environment:
       - THUMBOR_NUM_PROCESSES=4
       - SECURITY_KEY= # https://jwtsecretkeygenerator.com/
